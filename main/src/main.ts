@@ -28,13 +28,19 @@ app.use(globalComponents);
 app.use(directive);
 
 app.mount('#app');
-
+// /pure-app/welcome
 registerMicroApps([
   {
     name: 'sub-app', // app name registered
     entry: '//localhost:5174',
     container: '#micro-viewport',
     activeRule: '/sub-app',
+  },
+  {
+    name: 'pure-app', // app name registered
+    entry: '//localhost:8848',
+    container: '#micro-viewport',
+    activeRule: '/pure-app',
   },
 ]);
 

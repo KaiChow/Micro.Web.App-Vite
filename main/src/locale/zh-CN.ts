@@ -49,6 +49,8 @@ export default {
   'menu.micro.subapp': 'sub-vue',
   'menu.micro.workplace': '子应用工作台',
   'menu.micro.monitor': '子应用监控',
+  'menu.micro.pure.vue3-vite': '微应用vue3+vite+pure',
+  'menu.micro.pure.welcome': '子应用欢迎',
   ...localeSettings,
   ...localeMessageBox,
   ...localeLogin,
