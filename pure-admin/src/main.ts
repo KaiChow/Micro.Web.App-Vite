@@ -2,6 +2,10 @@ import App from "./App.vue";
 import router from "./router";
 import { setupStore } from "@/store";
 import { getPlatformConfig } from "./config";
+import {
+  renderWithQiankun,
+  qiankunWindow
+} from "vite-plugin-qiankun/dist/helper";
 import { MotionPlugin } from "@vueuse/motion";
 // import { useEcharts } from "@/plugins/echarts";
 import { createApp, type Directive } from "vue";
@@ -52,13 +56,45 @@ import "tippy.js/themes/light.css";
 import VueTippy from "vue-tippy";
 app.use(VueTippy);
 
-getPlatformConfig(app).then(async config => {
-  setupStore(app);
-  app.use(router);
-  await router.isReady();
-  injectResponsiveStorage(app, config);
-  app.use(MotionPlugin).use(useElementPlus).use(Table);
-  // .use(PureDescriptions)
-  // .use(useEcharts);
-  app.mount("#app");
-});
+// 增加qiankun子应用的render方法
+const initQianKun = () => {
+  renderWithQiankun({
+    mount(props: any) {
+      getPlatformConfig(app).then(async config => {
+        setupStore(app);
+        app.use(router);
+        await router.isReady();
+        injectResponsiveStorage(app, config);
+        app.use(MotionPlugin).use(useElementPlus).use(Table);
+        app.mount(props.container.querySelector("#pure-app"));
+      });
+    },
+    bootstrap() {
+      console.log("vue app bootstrap");
+    },
+    update() {
+      console.log("vue app update");
+    },
+    unmount() {
+      console.log("vue app unmount");
+      app?.unmount();
+    }
+  });
+};
+
+// 判断当前应用是否在主应用中
+
+if (qiankunWindow.__POWERED_BY_QIANKUN__) {
+  initQianKun();
+} else {
+  getPlatformConfig(app).then(async config => {
+    setupStore(app);
+    app.use(router);
+    await router.isReady();
+    injectResponsiveStorage(app, config);
+    app.use(MotionPlugin).use(useElementPlus).use(Table);
+    // .use(PureDescriptions)
+    // .use(useEcharts);
+    app.mount("#pure-app");
+  });
+}

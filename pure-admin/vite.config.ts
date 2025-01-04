@@ -1,4 +1,5 @@
 import { getPluginsList } from "./build/plugins";
+import qiankun from "vite-plugin-qiankun";
 import { include, exclude } from "./build/optimize";
 import { type UserConfigExport, type ConfigEnv, loadEnv } from "vite";
 import {
@@ -30,7 +31,13 @@ export default ({ mode }: ConfigEnv): UserConfigExport => {
         clientFiles: ["./index.html", "./src/{views,components}/*"]
       }
     },
-    plugins: getPluginsList(VITE_CDN, VITE_COMPRESSION),
+    plugins: [
+      ...getPluginsList(VITE_CDN, VITE_COMPRESSION),
+      qiankun("sub-app", {
+        // 配置qiankun插件
+        useDevMode: true
+      })
+    ],
     // https://cn.vitejs.dev/config/dep-optimization-options.html#dep-optimization-options
     optimizeDeps: {
       include,
