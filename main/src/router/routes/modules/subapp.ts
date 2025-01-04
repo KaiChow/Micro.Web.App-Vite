@@ -7,7 +7,7 @@ const SUBAPP: AppRouteRecordRaw = {
   name: 'SubAppMain',
   component: DEFAULT_LAYOUT,
   meta: {
-    locale: 'menu.micro',
+    locale: 'menu.micro.vue3-vite',
     icon: 'icon-user',
     requiresAuth: true,
     order: 19,
@@ -15,10 +15,20 @@ const SUBAPP: AppRouteRecordRaw = {
   children: [
     {
       path: 'dashboard/workplace',
-      name: 'SubAppVue',
+      name: 'SubAppVueWorkplace',
       component: MicroAppContainer,
       meta: {
-        locale: 'menu.micro.subapp',
+        locale: 'menu.micro.workplace',
+        requiresAuth: true,
+        roles: ['*'],
+      },
+    },
+    {
+      path: 'dashboard/monitor',
+      name: 'SubAppVueMonitor',
+      component: MicroAppContainer,
+      meta: {
+        locale: 'menu.micro.monitor',
         requiresAuth: true,
         roles: ['*'],
       },
